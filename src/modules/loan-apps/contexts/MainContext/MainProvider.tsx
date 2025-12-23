@@ -7,7 +7,12 @@ export const MainProvider = ({ children }: { children: ReactNode }) => {
 
   const onSaveLoanParams = (form: Record<string, string | boolean | ProposalType>) => {
     setCurrentLoan((prev) => {
-      const payload = { ...prev, ...form };
+      const payload = {
+        data: {
+          ...prev.data,
+          ...form,
+        },
+      };
       return payload;
     });
   };

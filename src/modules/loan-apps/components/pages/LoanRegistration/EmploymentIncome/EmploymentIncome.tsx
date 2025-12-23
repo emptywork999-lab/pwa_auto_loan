@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslate } from "@common/hooks";
 import { useAuthContext } from "@common/auth";
 import { usePostApplication, useRunLoanBp } from "../../../../hooks";
-import { useMainContext } from "../../../../contexts";
+import { CreditApplicationStatusType, useMainContext } from "../../../../contexts";
 import { ActionsWrapper } from "../../../ActionsWrapper";
 
 interface EmploymentIncomeType {
@@ -50,6 +50,7 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
     const loanParams = {
       ...currentLoan?.data,
       employmentIncome: form.getFieldsValue(),
+      status: CreditApplicationStatusType.SUBMITTED,
     };
 
     const requestObject = {
