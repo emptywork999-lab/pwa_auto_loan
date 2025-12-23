@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 export enum CreditApplicationStatusType {
   SUBMITTED = "SUBMITTED",
+  DRAFT = "DRAFT",
   UNDER_REVIEW = "UNDER_REVIEW",
   PROPOSALS_READY = "PROPOSALS_READY",
   READY_FOR_SIGNATURE = "READY_FOR_SIGNATURE",

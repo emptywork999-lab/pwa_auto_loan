@@ -28,7 +28,7 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
         const applicationId = JSON.parse(data as string)?.applicationId;
         runLoanBp(
           {
-            bpmnProcessId: "loan_main_process",
+            bpmnProcessId: "auto-loan",
             variables: {
               appId: applicationId,
             },

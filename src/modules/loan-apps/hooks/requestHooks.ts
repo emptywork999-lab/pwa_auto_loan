@@ -8,16 +8,17 @@ export const useGetApplicationsStatuses = (ids: string[]) => {
   const queries = useQueries(
     ids.map((id) => ({
       queryKey: ["status", id],
-      queryFn: () => apiClient.getApplicationStatus(),
+      queryFn: () => apiClient.getApplicationStatus(id),
       retry: false,
       useErrorBoundary: false,
       onError: (e: object) => console.log(e),
       refetchInterval: 2 * 60 * 1000,
+      enabled: !!ids?.length,
     })),
   );
 
   return queries.map((query, index) => ({
-    status: query.data?.appStatusRecord?.appStatus,
+    status: query.data?.status,
     appId: ids[index],
     isLoading: query.isLoading,
     isError: query.isError,
@@ -96,7 +97,7 @@ export const useGetApplicationsList = () => {
     },
   );
 
-  return { applications: applications?.filter((el) => el?.data), isLoading };
+  return { applications: applications?.filter((el) => el?.data && el?.data?.status), isLoading };
 };
 
 export const usePostApplication = () => {

@@ -1,4 +1,5 @@
 import { Control, FieldErrors, UseFormClearErrors, UseFormSetValue, UseFormTrigger } from "react-hook-form";
+import { CreditApplicationStatusType } from "../contexts";
 
 export type NewRequestType = {
   requestedSum: number;
@@ -120,10 +121,8 @@ export interface AppStatusType {
 }
 
 export type StatusType = {
-  appStatusRecord: {
-    appStatus: string;
-    statusSetDttm: string;
-  };
+  status: CreditApplicationStatusType;
+  timestamp: string;
 };
 
 export type CommentType = {

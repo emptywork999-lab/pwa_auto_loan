@@ -15,7 +15,7 @@ export interface ApiClientType {
   getApplication: (appId: string) => Promise<ApplicationType>;
   sendNewLoanRequest: (application: ApplicationRequestType) => Promise<{ applicationId: string }>;
   runLoanBp: (requestData: ProcessInstanceType) => Promise<void>;
-  getApplicationStatus: (appId?: string) => Promise<StatusType>;
+  getApplicationStatus: (appId: string) => Promise<StatusType>;
   getApplicationComment: (appId: string) => Promise<CommentType>;
   updateLoanRequest: (application: ApplicationPutRequestType) => Promise<{ applicationId: string }>;
   getApplicationFacts: (appId: string) => Promise<FactType[]>;

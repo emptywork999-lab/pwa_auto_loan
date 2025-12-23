@@ -30,6 +30,7 @@ export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number 
     setCurrentLoan(loan);
     switch (loan?.data?.status) {
       case CreditApplicationStatusType.SUBMITTED:
+      case CreditApplicationStatusType.DRAFT:
         navigate("/loan-apps/new");
         break;
       case CreditApplicationStatusType.PROPOSALS_READY:
@@ -43,6 +44,7 @@ export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number 
 
   switch (loan?.data?.status) {
     case CreditApplicationStatusType.SUBMITTED:
+    case CreditApplicationStatusType.DRAFT:
     case undefined:
       return (
         <StyledCard actions={[<Button onClick={onSetCurrentLoan}>{translate("go_to_application")}</Button>]}>

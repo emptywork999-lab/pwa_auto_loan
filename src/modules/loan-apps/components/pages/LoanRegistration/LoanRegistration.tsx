@@ -19,7 +19,9 @@ export const LoanRegistration = () => {
   const { translate } = useTranslate();
 
   const stepComponent = useMemo(() => {
-    const disabledForm = currentLoan?.data?.status === CreditApplicationStatusType.SUBMITTED;
+    const disabledForm =
+      currentLoan?.data?.status === CreditApplicationStatusType.SUBMITTED ||
+      currentLoan?.data?.status === CreditApplicationStatusType.DRAFT;
     switch (currentStep) {
       case 1:
         return <LoanParams setCurrentStep={setCurrentStep} disabledForm={disabledForm} />;
