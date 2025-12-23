@@ -60,4 +60,16 @@ export interface LoanParamsType {
   applicationId?: string;
 }
 
+export type CarInfoDataType = {
+  vin: string;
+  mileage: number;
+  carPrice: number;
+  kaskoCost: number;
+};
+
+export type CarInfoType = {
+  data: CarInfoDataType;
+  applicationId: string;
+};
+
 export type FormType = Record<string, string | boolean | ProposalType>;

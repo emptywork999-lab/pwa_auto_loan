@@ -12,7 +12,7 @@ import {
   CompleteAppRequestType,
   ProposalType,
 } from "../types";
-import { LoanParamsType } from "../contexts";
+import { CarInfoType, LoanParamsType } from "../contexts";
 
 const axiosLoansInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/application/api/v1",
@@ -24,6 +24,10 @@ const axiosProposalInstance = getAxiosInstance({
 
 const appStatusApiInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/status/api/v1/statuses",
+});
+
+const appCarInfoApiInstance = getAxiosInstance({
+  baseURL: window._REACT_APP.basePath + "/carinfo/api/v1/carinfos",
 });
 
 const appCommentApiInstance = getAxiosInstance({
@@ -159,9 +163,12 @@ const completeApplication = async (request: CompleteAppRequestType) => {
   });
 };
 
-const sendCarInfo = async (request: Record<string, string>) => {
-  console.log(request);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+const sendCarInfo = async (request: CarInfoType) => {
+  await appCarInfoApiInstance.request<void>({
+    url: request.applicationId,
+    method: "POST",
+    data: request,
+  });
 };
 
 export const apiClient: ApiClientType = {

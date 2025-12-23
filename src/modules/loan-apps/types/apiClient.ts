@@ -1,4 +1,4 @@
-import { LoanParamsType } from "../contexts";
+import { CarInfoType, LoanParamsType } from "../contexts";
 import {
   ApplicationRequestType,
   ApplicationPutRequestType,
@@ -23,6 +23,6 @@ export interface ApiClientType {
   acceptApplication: (appId: string) => Promise<void>;
   completeApplication: (requestData: CompleteAppRequestType) => Promise<void>;
   approveApplication: (appId: string) => Promise<void>;
-  sendCarInfo: (request: Record<string, string>) => Promise<void>;
+  sendCarInfo: (request: CarInfoType) => Promise<void>;
   getProposalsList: (appId: string) => Promise<ProposalType[]>;
 }

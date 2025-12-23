@@ -2,7 +2,7 @@ import { Card, Form, Input, Button, notification, Spin } from "antd";
 import { useEffect } from "react";
 import { useTranslate } from "@common/hooks";
 import { useFormRules, useSendCarInfo } from "../../../hooks";
-import { useMainContext } from "../../../contexts";
+import { CarInfoDataType, useMainContext } from "../../../contexts";
 import { ActionsWrapper } from "../../ActionsWrapper";
 import { useNavigate } from "react-router-dom";
 
@@ -27,13 +27,18 @@ export const CarInfo = () => {
     form.setFieldsValue(loanParams?.data?.carInfo);
   }, [form, loanParams?.data?.carInfo]);
 
-  const sendCarInfo = (params: Record<string, string>) => {
-    mutate(params, {
-      onSuccess: () => {
-        notification.success({ message: translate("car-info_sent") });
-        navigate("/loan-apps");
-      },
-    });
+  const sendCarInfo = (params: CarInfoDataType) => {
+    if (loanParams?.applicationId) {
+      mutate(
+        { applicationId: loanParams?.applicationId, data: params },
+        {
+          onSuccess: () => {
+            notification.success({ message: translate("car-info_sent") });
+            navigate("/loan-apps");
+          },
+        },
+      );
+    }
   };
 
   return (
