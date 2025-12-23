@@ -17,6 +17,10 @@ const axiosLoansInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/application/api/v1",
 });
 
+const axiosProposalInstance = getAxiosInstance({
+  baseURL: window._REACT_APP.basePath + "/proposal/api/v1",
+});
+
 const appStatusApiInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/status/api/v1/statuses",
 });
@@ -50,7 +54,7 @@ const getApplicationsList = async (userId: string) => {
 };
 
 const getProposalsList = async (appId: string) => {
-  const { data } = await axiosLoansInstance.request<ApplicationType[]>({
+  const { data } = await axiosProposalInstance.request<ApplicationType[]>({
     url: `/proposals/${appId}`,
     method: "GET",
   });

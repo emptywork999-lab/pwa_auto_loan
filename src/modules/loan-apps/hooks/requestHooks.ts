@@ -118,10 +118,18 @@ export const useRunLoanBp = () => {
   return { isLoading, isSuccess, runLoanBp };
 };
 
-export const useGetProposals = () => {
-  const { isLoading, isSuccess, mutate: getProposalsList } = useMutation(apiClient.getProposalsList, { retry: false });
+export const useGetProposals = (id?: string) => {
+  const queryKey = "proposal";
+  const { isLoading, isSuccess, data } = useQuery(
+    [queryKey, id],
+    () => (id ? apiClient.getProposalsList(id) : void 0),
+    {
+      retry: false,
+      enabled: !!id,
+    },
+  );
 
-  return { isLoading, isSuccess, getProposalsList };
+  return { isLoading, isSuccess, data };
 };
 
 export const useAcceptApplication = () => {

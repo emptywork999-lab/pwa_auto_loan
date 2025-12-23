@@ -5,6 +5,7 @@ import { ActionsWrapper } from "../../ActionsWrapper";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
+import { useGetProposals } from "../../../hooks";
 
 const { Title } = Typography;
 
@@ -42,6 +43,7 @@ export const Proposals = () => {
   const { translate, formatNumber } = useTranslate();
   const [selectedSignType, setSelectedSignType] = useState("electronicSigning");
   const navigate = useNavigate();
+  const { data } = useGetProposals(currentLoan?.applicationId);
 
   const proposals: ProposalType[] = [
     {
@@ -61,7 +63,7 @@ export const Proposals = () => {
       loanDuration: "05.12.2026",
     },
   ];
-
+  console.log(data);
   const getTermText = (term: number) => {
     const months = translate("step3.term").toLowerCase().includes("month") ? "months" : "месяцев";
     return `${term} ${months}`;
