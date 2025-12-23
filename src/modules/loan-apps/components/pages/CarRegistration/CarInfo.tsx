@@ -24,8 +24,8 @@ export const CarInfo = () => {
   }, [carPrice, form]);
 
   useEffect(() => {
-    form.setFieldsValue(loanParams?.carInfo);
-  }, [form, loanParams?.carInfo]);
+    form.setFieldsValue(loanParams?.data?.carInfo);
+  }, [form, loanParams?.data?.carInfo]);
 
   const sendCarInfo = (params: Record<string, string>) => {
     mutate(params, {

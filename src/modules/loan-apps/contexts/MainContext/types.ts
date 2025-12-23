@@ -7,8 +7,6 @@ export enum CreditApplicationStatusType {
   READY_FOR_SIGNATURE = "READY_FOR_SIGNATURE",
 }
 export interface MainContextType {
-  activeApplications: LoanParamsType[];
-  setActiveApplications: Dispatch<SetStateAction<LoanParamsType[]>>;
   currentLoan: LoanParamsType;
   setCurrentLoan: Dispatch<SetStateAction<LoanParamsType>>;
   onSaveLoanParams: (form: FormType) => void;
@@ -34,29 +32,31 @@ export interface PersonalInfoType {
   registrationAddress?: string;
 }
 export interface LoanParamsType {
-  personalInfo?: PersonalInfoType;
-  loanParams?: {
-    loanPurpose: string;
-    loanAmount: number;
-    creditProgram: string;
-    loanTerm: number;
-    downPayment: number;
+  data?: {
+    personalInfo?: PersonalInfoType;
+    loanParams?: {
+      loanPurpose: string;
+      loanAmount: number;
+      creditProgram: string;
+      loanTerm: number;
+      downPayment: number;
+    };
+    employmentIncome?: {
+      employerName?: string;
+      employmentType: string;
+      employerInn: string;
+      position: string;
+      workExperience: number;
+      monthlyIncome: number;
+    };
+    carInfo?: {
+      vin: number;
+    };
+    agree?: boolean;
+    selectedProposal?: ProposalType;
+    status?: CreditApplicationStatusType;
   };
-  employmentIncome?: {
-    employerName?: string;
-    employmentType: string;
-    employerInn: string;
-    position: string;
-    workExperience: number;
-    monthlyIncome: number;
-  };
-  carInfo?: {
-    vin: number;
-  };
-  agree?: boolean;
-  selectedProposal?: ProposalType;
-  status?: CreditApplicationStatusType;
-  id?: string;
+  applicationId?: string;
 }
 
 export type FormType = Record<string, string | boolean | ProposalType>;

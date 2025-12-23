@@ -64,7 +64,11 @@ export const SignDocuments = () => {
       </div>
 
       <ActionsWrapper>
-        <Button type="primary" size="large" onClick={() => navigate(`/loan-apps/accept-loan/${currentLoan?.id}`)}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => navigate(`/loan-apps/accept-loan/${currentLoan?.applicationId}`)}
+        >
           {translate("common.back")}
         </Button>
         <Button type="primary" size="large" onClick={handleSign} disabled={!signature.trim() || !signature}>

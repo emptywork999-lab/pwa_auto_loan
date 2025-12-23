@@ -110,7 +110,7 @@ export const Proposals = () => {
             />
             <BtnsWrapper>
               <Select options={signingOptions} value={selectedSignType} onChange={setSelectedSignType} />
-              <Button type="primary" onClick={() => navigate(`/loan-apps/${currentLoan.id}/car-info`)}>
+              <Button type="primary" onClick={() => navigate(`/loan-apps/${currentLoan?.applicationId}/car-info`)}>
                 {translate("step3.select")}
               </Button>
             </BtnsWrapper>

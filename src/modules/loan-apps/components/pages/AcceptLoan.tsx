@@ -10,10 +10,10 @@ const { Title } = Typography;
 export const AcceptLoan = () => {
   const { translate, formatNumber } = useTranslate();
   const { currentLoan } = useMainContext();
-  const [agreed, setAgreed] = useState(currentLoan.agree ?? false);
+  const [agreed, setAgreed] = useState(currentLoan.data?.agree ?? false);
   const navigate = useNavigate();
 
-  const proposal = currentLoan.selectedProposal;
+  const proposal = currentLoan?.data?.selectedProposal;
 
   return (
     <Card title={translate("step7.title")}>
@@ -33,7 +33,7 @@ export const AcceptLoan = () => {
           {formatNumber(proposal?.payment || 0)} ₽
         </Descriptions.Item>
         <Descriptions.Item label={translate("step7.car")}>
-          Toyota Camry ({translate("step7.vin")}-{currentLoan?.carInfo?.vin})
+          Toyota Camry ({translate("step7.vin")}-{currentLoan?.data?.carInfo?.vin})
         </Descriptions.Item>
       </Descriptions>
 
@@ -52,7 +52,7 @@ export const AcceptLoan = () => {
         <Button
           type="primary"
           disabled={!agreed}
-          onClick={() => navigate(`/loan-apps/sign-documents/${currentLoan.id}`)}
+          onClick={() => navigate(`/loan-apps/sign-documents/${currentLoan.applicationId}`)}
         >
           {translate("step7.accept")}
         </Button>

@@ -4,14 +4,15 @@ import { useTranslate } from "@common/hooks";
 
 import { Card, Button, Empty, Spin } from "antd";
 
-import { useMainContext } from "../../contexts";
+import { LoanParamsType, useMainContext } from "../../contexts";
 import { ApplicationItem } from "./components/ApplicationItem";
-import { useGetApplicationsList } from "../../hooks";
+import { useGetApplicationsList, useGetApplicationsStatuses } from "../../hooks";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 const StyledApplicationsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 
   @media (width <= 768px) {
@@ -36,14 +37,29 @@ export const HomePage = () => {
   const { setCurrentLoan } = useMainContext();
   const { translate } = useTranslate();
   const navigate = useNavigate();
-
-  const { activeApplications } = useMainContext();
   const { applications, isLoading } = useGetApplicationsList();
+  const statuses = useGetApplicationsStatuses(applications?.map((el) => el.applicationId ?? "") ?? []);
 
   useEffect(() => {
     setCurrentLoan({});
-    console.log(applications);
-  }, [setCurrentLoan, applications]);
+  }, [setCurrentLoan]);
+
+  const statusMap = statuses?.reduce(
+    (acc, status) => ({ ...acc, [status.appId]: status.status }),
+    {} as Record<string, string | undefined>,
+  );
+
+  const updatedApplications = useMemo(
+    () =>
+      applications?.map((app) => ({
+        ...app,
+        data: {
+          ...app.data,
+          status: app?.applicationId ? (statusMap[app?.applicationId] ?? app?.data?.status) : app?.data?.status,
+        },
+      })) as LoanParamsType[],
+    [applications, statusMap],
+  );
 
   return (
     <Spin spinning={isLoading}>
@@ -65,9 +81,11 @@ export const HomePage = () => {
             </div>
           }
         >
-          {activeApplications?.length ? (
+          {updatedApplications?.length ? (
             <StyledApplicationsWrapper>
-              {activeApplications?.map((el, index) => <ApplicationItem loan={el} index={index + 1} key={el.id} />)}
+              {updatedApplications?.map((el, index) => (
+                <ApplicationItem loan={el} index={index + 1} key={el.applicationId} />
+              ))}
             </StyledApplicationsWrapper>
           ) : (
             <Empty description={translate("no_active_applications")} />

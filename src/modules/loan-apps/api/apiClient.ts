@@ -11,13 +11,14 @@ import {
   FactType,
   CompleteAppRequestType,
 } from "../types";
+import { LoanParamsType } from "../contexts";
 
 const axiosLoansInstance = getAxiosInstance({
-  baseURL: window._REACT_APP.basePath + "/demo-loan-origination/api/v1",
+  baseURL: window._REACT_APP.basePath + "/application/api/v1",
 });
 
 const appStatusApiInstance = getAxiosInstance({
-  baseURL: window._REACT_APP.basePath + "/api/v1/statuses",
+  baseURL: window._REACT_APP.basePath + "/application/api/v1/statuses",
 });
 
 const appCommentApiInstance = getAxiosInstance({
@@ -37,7 +38,7 @@ const bffApiInstance = getAxiosInstance({
 });
 
 const getApplicationsList = async (userId: string) => {
-  const { data } = await axiosLoansInstance.request<ApplicationType[]>({
+  const { data } = await axiosLoansInstance.request<LoanParamsType[]>({
     url: "/applications",
     method: "GET",
     params: {
@@ -66,7 +67,7 @@ const getApplication = async (id: string) => {
   return data;
 };
 
-const getApplicationStatus = async (appId: string) => {
+const getApplicationStatus = async (appId?: string) => {
   const { data } = await appStatusApiInstance.request<StatusType>({
     url: appId,
     method: "GET",

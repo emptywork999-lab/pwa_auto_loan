@@ -28,20 +28,20 @@ export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number 
 
   const onSetCurrentLoan = () => {
     setCurrentLoan(loan);
-    switch (loan.status) {
+    switch (loan?.data?.status) {
       case CreditApplicationStatusType.SUBMITTED:
         navigate("/loan-apps/new");
         break;
       case CreditApplicationStatusType.PROPOSALS_READY:
-        navigate(`/loan-apps/proposals/${loan?.id}`);
+        navigate(`/loan-apps/proposals/${loan?.applicationId}`);
         break;
       case CreditApplicationStatusType.READY_FOR_SIGNATURE:
-        navigate(`/loan-apps/accept-loan/${loan?.id}`);
+        navigate(`/loan-apps/accept-loan/${loan?.applicationId}`);
         break;
     }
   };
 
-  switch (loan?.status) {
+  switch (loan?.data?.status) {
     case CreditApplicationStatusType.SUBMITTED:
     case undefined:
       return (

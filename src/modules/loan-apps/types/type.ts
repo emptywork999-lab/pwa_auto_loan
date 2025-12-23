@@ -102,7 +102,6 @@ export type FullDataType = PartDataType & {
 };
 
 export interface ApplicationRequestType {
-  regDate: string;
   participant?: object;
   userId: string;
 }

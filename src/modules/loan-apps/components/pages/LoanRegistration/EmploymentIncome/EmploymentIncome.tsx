@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslate } from "@common/hooks";
 import { useAuthContext } from "@common/auth";
 import { usePostApplication, useRunLoanBp } from "../../../../hooks";
-import { CreditApplicationStatusType, useMainContext } from "../../../../contexts";
+import { useMainContext } from "../../../../contexts";
 import { ActionsWrapper } from "../../../ActionsWrapper";
 
 interface EmploymentIncomeType {
@@ -23,37 +23,37 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
   const { runLoanBp } = useRunLoanBp();
 
   const startBp = useCallback(
-    (data: { applicationId: string }) => {
-      runLoanBp(
-        {
-          bpmnProcessId: "auto-loan",
-          variables: {
-            appId: data?.applicationId,
+    (data: unknown) => {
+      if (data) {
+        const applicationId = JSON.parse(data as string)?.applicationId;
+        runLoanBp(
+          {
+            bpmnProcessId: "loan_main_process",
+            variables: {
+              appId: applicationId,
+            },
           },
-        },
-        {
-          onSuccess: () => {
-            notification.success({ message: translate("application_sent") });
-            navigate("/loan-apps");
+          {
+            onSuccess: () => {
+              notification.success({ message: translate("application_sent") });
+              navigate("/loan-apps");
+            },
+            onError: () => notification.error({ message: translate("failed_start_bp") }),
           },
-          onError: () => notification.error({ message: translate("failed_start_bp") }),
-        },
-      );
+        );
+      }
     },
     [navigate, runLoanBp, translate],
   );
 
   const sendLoanApplication = useCallback(() => {
     const loanParams = {
-      ...currentLoan,
+      ...currentLoan?.data,
       employmentIncome: form.getFieldsValue(),
-      id: crypto.randomUUID() as string,
-      status: CreditApplicationStatusType.SUBMITTED,
     };
 
     const requestObject = {
-      participant: loanParams,
-      regDate: new Date().toISOString(),
+      data: loanParams,
       userId: profile?.userId || "",
       applicationId: crypto.randomUUID(),
     };
@@ -64,8 +64,8 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
   }, [mutate, profile?.userId, currentLoan, form, startBp, translate]);
 
   useEffect(() => {
-    form.setFieldsValue(currentLoan?.employmentIncome);
-  }, [form, currentLoan?.employmentIncome]);
+    form.setFieldsValue(currentLoan?.data?.employmentIncome);
+  }, [form, currentLoan?.data?.employmentIncome]);
 
   return (
     <Spin spinning={isLoading}>
