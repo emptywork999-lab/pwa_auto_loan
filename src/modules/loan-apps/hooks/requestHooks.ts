@@ -12,6 +12,7 @@ export const useGetApplicationsStatuses = (ids: string[]) => {
       retry: false,
       useErrorBoundary: false,
       onError: (e: object) => console.log(e),
+      refetchInterval: 2 * 60 * 1000,
     })),
   );
 
