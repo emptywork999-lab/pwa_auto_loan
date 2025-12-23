@@ -364,5 +364,10 @@
   "ready_for_signature": "Готово к подписанию",
   "go_to_signing": "Перейти к подписанию",
   "loan_success_processed": "Кредит успешно оформлен",
-  "failed_start_bp": "Не удалось запустить бизнес-процесс"
+  "failed_start_bp": "Не удалось запустить бизнес-процесс",
+  "proposal.approvedInterestRate": "Процентная ставка",
+  "proposal.approvedRepaymentPeriod": "Срок погашения",
+  "proposal.proposalPeriod": "Срок действия предложения",
+  "proposal.proposalDate": "Дата предложения",
+  "proposal.period.months": "мес."
 }

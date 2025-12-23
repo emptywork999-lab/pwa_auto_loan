@@ -8,6 +8,7 @@ import {
   ProcessInstanceType,
   StatusType,
   CompleteAppRequestType,
+  ProposalType,
 } from "./type";
 
 export interface ApiClientType {
@@ -23,5 +24,5 @@ export interface ApiClientType {
   completeApplication: (requestData: CompleteAppRequestType) => Promise<void>;
   approveApplication: (appId: string) => Promise<void>;
   sendCarInfo: (request: Record<string, string>) => Promise<void>;
-  getProposalsList: (appId: string) => Promise<ApplicationType[]>;
+  getProposalsList: (appId: string) => Promise<ProposalType[]>;
 }

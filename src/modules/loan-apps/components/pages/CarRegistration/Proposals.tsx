@@ -1,5 +1,5 @@
 import { Card, List, Typography, Space, Tag, Button, Select } from "antd";
-import { useMainContext, type ProposalType } from "../../../contexts";
+import { useMainContext } from "../../../contexts";
 import { useTranslate } from "@common/hooks";
 import { ActionsWrapper } from "../../ActionsWrapper";
 import { useNavigate } from "react-router-dom";
@@ -43,31 +43,7 @@ export const Proposals = () => {
   const { translate, formatNumber } = useTranslate();
   const [selectedSignType, setSelectedSignType] = useState("electronicSigning");
   const navigate = useNavigate();
-  const { data } = useGetProposals(currentLoan?.applicationId);
-
-  const proposals: ProposalType[] = [
-    {
-      id: 1,
-      amount: 500000,
-      interest: 7.5,
-      term: 60,
-      payment: 10000,
-      loanDuration: "01.12.2026",
-    },
-    {
-      id: 2,
-      amount: 450000,
-      interest: 8.0,
-      term: 48,
-      payment: 13000,
-      loanDuration: "05.12.2026",
-    },
-  ];
-  console.log(data);
-  const getTermText = (term: number) => {
-    const months = translate("step3.term").toLowerCase().includes("month") ? "months" : "месяцев";
-    return `${term} ${months}`;
-  };
+  const { data: proposals } = useGetProposals(currentLoan?.applicationId);
 
   const signingOptions = [
     {
@@ -79,6 +55,14 @@ export const Proposals = () => {
       label: translate("manualSigning"),
     },
   ];
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("ru-RU");
+  };
+
+  const getPeriodText = (period: number) => {
+    return `${period} ${translate("proposal.period.months")}`;
+  };
 
   return (
     <Card title={translate("step3.title")}>
@@ -92,18 +76,24 @@ export const Proposals = () => {
             <List.Item.Meta
               title={
                 <StyledSpace>
-                  <span style={{ fontSize: 18, fontWeight: "bold" }}>{formatNumber(proposal.amount)} ₽</span>
+                  <span style={{ fontSize: 18, fontWeight: "bold" }}>
+                    {formatNumber(proposal?.approvedSum)} {proposal?.currency}
+                  </span>
+
                   <Tag color="blue">
-                    {translate("step3.interest")}: {proposal.interest}%
+                    {translate("proposal.approvedInterestRate")}: {proposal?.approvedInterestRate}%
                   </Tag>
+
                   <Tag color="green">
-                    {translate("step3.term")}: {getTermText(proposal.term)}
+                    {translate("proposal.approvedRepaymentPeriod")}: {getPeriodText(proposal?.approvedRepaymentPeriod)}
                   </Tag>
-                  <Tag color="green">
-                    {translate("step7.monthlyPayment")}: {formatNumber(proposal.payment)} ₽
+
+                  <Tag color="orange">
+                    {translate("proposal.proposalPeriod")}: {getPeriodText(proposal?.proposalPeriod)}
                   </Tag>
-                  <Tag color="red">
-                    {translate("step7.loan_duration")}: {proposal.loanDuration}
+
+                  <Tag color="purple">
+                    {translate("proposal.proposalDate")}: {formatDate(proposal?.proposalDate)}
                   </Tag>
                 </StyledSpace>
               }

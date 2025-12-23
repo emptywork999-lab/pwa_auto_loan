@@ -10,6 +10,7 @@ import {
   CommentType,
   FactType,
   CompleteAppRequestType,
+  ProposalType,
 } from "../types";
 import { LoanParamsType } from "../contexts";
 
@@ -54,7 +55,7 @@ const getApplicationsList = async (userId: string) => {
 };
 
 const getProposalsList = async (appId: string) => {
-  const { data } = await axiosProposalInstance.request<ApplicationType[]>({
+  const { data } = await axiosProposalInstance.request<ProposalType[]>({
     url: `/proposals/${appId}`,
     method: "GET",
   });

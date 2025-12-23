@@ -365,5 +365,10 @@
   "ready_for_signature": "Ready for signature",
   "go_to_signing": "Go to signing",
   "loan_success_processed": "Loan successfully processed",
-  "failed_start_bp": "Не удалось запустить бизнес-процесс"
+  "failed_start_bp": "Не удалось запустить бизнес-процесс",
+  "proposal.approvedInterestRate": "Approved interest rate",
+  "proposal.approvedRepaymentPeriod": "Approved repayment period",
+  "proposal.proposalPeriod": "Proposal period",
+  "proposal.proposalDate": "Proposal date",
+  "proposal.period.months": "months"
 }
