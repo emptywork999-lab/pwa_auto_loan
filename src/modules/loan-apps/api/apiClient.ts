@@ -1,17 +1,6 @@
 import { getAxiosInstance } from "@common/data-access";
 
-import {
-  ApplicationRequestType,
-  ApplicationPutRequestType,
-  ApplicationType,
-  ApiClientType,
-  ProcessInstanceType,
-  StatusType,
-  CommentType,
-  FactType,
-  CompleteAppRequestType,
-  ProposalType,
-} from "../types";
+import { ApiClientType, ProcessInstanceType, StatusType, ProposalType } from "../types";
 import { CarInfoType, LoanParamsType } from "../contexts";
 
 const axiosLoansInstance = getAxiosInstance({
@@ -30,20 +19,8 @@ const appCarInfoApiInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/carinfo/api/v1/carinfos",
 });
 
-const appCommentApiInstance = getAxiosInstance({
-  baseURL: window._REACT_APP.basePath + "/comments/v1",
-});
-
 const processApiInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/bpmn-camunda-process",
-});
-
-const factsApiInstance = getAxiosInstance({
-  baseURL: window._REACT_APP.basePath + "/dms-facts/v1",
-});
-
-const bffApiInstance = getAxiosInstance({
-  baseURL: window._REACT_APP.basePath + "/bff-front/v1",
 });
 
 const getApplicationsList = async (userId: string) => {
@@ -68,7 +45,7 @@ const getProposalsList = async (appId: string) => {
 };
 
 const getApplication = async (id: string) => {
-  const { data } = await axiosLoansInstance.request<ApplicationType>({
+  const { data } = await axiosLoansInstance.request<LoanParamsType>({
     url: "/applications/" + id,
     method: "GET",
   });
@@ -85,35 +62,11 @@ const getApplicationStatus = async (appId: string) => {
   return data;
 };
 
-const getApplicationComment = async (appId: string) => {
-  const { data } = await appCommentApiInstance.request<CommentType>({
-    url: `/comments/${appId}`,
-    method: "GET",
-  });
-
-  return data;
-};
-
-const sendNewLoanRequest = async (formData: ApplicationRequestType) => {
+const sendNewLoanRequest = async (formData: LoanParamsType) => {
   try {
     const { data } = await axiosLoansInstance.request({
       url: "/applications",
       method: "POST",
-      data: formData,
-    });
-
-    return data;
-  } catch (error) {
-    console.error("Error submitting form", error);
-    throw error;
-  }
-};
-
-const updateLoanRequest = async (formData: ApplicationPutRequestType) => {
-  try {
-    const { data } = await axiosLoansInstance.request({
-      url: "/applications/" + formData.applicationId,
-      method: "PUT",
       data: formData,
     });
 
@@ -132,37 +85,6 @@ const runLoanBp = async (requestData: ProcessInstanceType) => {
   });
 };
 
-const getApplicationFacts = async (appId: string) => {
-  const { data } = await factsApiInstance.request<FactType[]>({
-    url: `facts/${appId}`,
-    method: "GET",
-  });
-
-  return data;
-};
-
-const acceptApplication = async (appId: string) => {
-  await bffApiInstance.request<void>({
-    url: `/accept/${appId}`,
-    method: "POST",
-  });
-};
-
-const approveApplication = async (appId: string) => {
-  await bffApiInstance.request<void>({
-    url: `/approve/${appId}`,
-    method: "POST",
-  });
-};
-
-const completeApplication = async (request: CompleteAppRequestType) => {
-  await bffApiInstance.request<void>({
-    url: `/complete-liveness`,
-    method: "POST",
-    data: request,
-  });
-};
-
 const sendCarInfo = async (request: CarInfoType) => {
   await appCarInfoApiInstance.request<void>({
     url: request.applicationId,
@@ -176,13 +98,7 @@ export const apiClient: ApiClientType = {
   sendNewLoanRequest,
   runLoanBp,
   getApplicationStatus,
-  getApplicationComment,
-  updateLoanRequest,
-  getApplicationFacts,
   getApplication,
-  acceptApplication,
-  completeApplication,
-  approveApplication,
   sendCarInfo,
   getProposalsList,
 };

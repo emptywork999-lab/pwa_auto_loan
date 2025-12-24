@@ -25,37 +25,6 @@ export const useGetApplicationsStatuses = (ids: string[]) => {
   }));
 };
 
-export const useGetApplicationsFacts = (ids: string[]) => {
-  const queries = useQueries(
-    ids.map((id) => ({
-      queryKey: ["facts", id],
-      queryFn: () => apiClient.getApplicationFacts(id),
-      retry: false,
-      useErrorBoundary: false,
-      onError: (e: object) => console.log(e),
-    })),
-  );
-
-  return queries.map((query, index) => ({
-    facts: query.data,
-    appId: ids[index],
-    isLoading: query.isLoading,
-    isError: query.isError,
-  }));
-};
-
-export const useGetApplicationFacts = (id: string) => {
-  const queryKey = "facts";
-
-  const { data: facts, isLoading } = useQuery([queryKey, id], () => apiClient.getApplicationFacts(id), {
-    retry: false,
-    useErrorBoundary: false,
-    enabled: !!id,
-  });
-
-  return { facts, isLoading };
-};
-
 export const useGetApplicationStatus = (id: string) => {
   const queryKey = "status";
 
@@ -106,12 +75,6 @@ export const usePostApplication = () => {
   return { data, isLoading, isError, isSuccess, mutate };
 };
 
-export const usePutApplication = () => {
-  const { isLoading, isError, data, isSuccess, mutate } = useMutation(apiClient.updateLoanRequest, { retry: false });
-
-  return { data, isLoading, isError, isSuccess, mutate };
-};
-
 export const useRunLoanBp = () => {
   const { isLoading, isSuccess, mutate: runLoanBp } = useMutation(apiClient.runLoanBp, { retry: false });
 
@@ -130,36 +93,6 @@ export const useGetProposals = (id?: string) => {
   );
 
   return { isLoading, isSuccess, data };
-};
-
-export const useAcceptApplication = () => {
-  const {
-    isLoading,
-    isSuccess,
-    mutate: acceptApplication,
-  } = useMutation(apiClient.acceptApplication, { retry: false });
-
-  return { isLoading, isSuccess, acceptApplication };
-};
-
-export const useCompleteApplication = () => {
-  const {
-    isLoading,
-    isSuccess,
-    mutate: completeApplication,
-  } = useMutation(apiClient.completeApplication, { retry: false });
-
-  return { isLoading, isSuccess, completeApplication };
-};
-
-export const useApproveApplication = () => {
-  const {
-    isLoading,
-    isSuccess,
-    mutate: approveApplication,
-  } = useMutation(apiClient.approveApplication, { retry: false });
-
-  return { isLoading, isSuccess, approveApplication };
 };
 
 export const useSendCarInfo = () => {
