@@ -9,7 +9,7 @@ import { CreditApplicationStatusType, useMainContext, type LoanParamsType } from
 import styled from "styled-components";
 import { AppInfo } from "./AppInfo";
 
-const { Paragraph, Title } = Typography;
+const { Title } = Typography;
 
 const StyledCard = styled(Card)`
   width: 300px;
@@ -60,9 +60,6 @@ export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number 
             </StyledTag>
           </Title>
           <AppInfo loan={loan} />
-          <Paragraph italic type="secondary">
-            {translate("step2.infoDescription")}
-          </Paragraph>
         </StyledCard>
       );
     case CreditApplicationStatusType.PROPOSALS_READY:
@@ -74,9 +71,6 @@ export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number 
             </StyledTag>
           </Title>
           <AppInfo loan={loan} />
-          <Paragraph italic type="secondary">
-            {translate("proposals_desc")}
-          </Paragraph>
         </StyledCard>
       );
     case CreditApplicationStatusType.READY_FOR_SIGNATURE:
@@ -88,9 +82,6 @@ export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number 
             </StyledTag>
           </Title>
           <AppInfo loan={loan} />
-          <Paragraph italic type="secondary">
-            {translate("step5.success")}
-          </Paragraph>
         </StyledCard>
       );
   }
