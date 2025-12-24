@@ -1,7 +1,7 @@
 import { getAxiosInstance } from "@common/data-access";
 
 import { ApiClientType, ProcessInstanceType, StatusType, ProposalType } from "../types";
-import { CarInfoType, LoanParamsType } from "../contexts";
+import { CarInfoType, PostEventsType, LoanParamsType } from "../contexts";
 
 const axiosLoansInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/application/api/v1",
@@ -21,6 +21,10 @@ const appCarInfoApiInstance = getAxiosInstance({
 
 const processApiInstance = getAxiosInstance({
   baseURL: window._REACT_APP.basePath + "/bpmn-camunda-process",
+});
+
+const eventsApiInstance = getAxiosInstance({
+  baseURL: window._REACT_APP.basePath + "/event/api/v1",
 });
 
 const getApplicationsList = async (userId: string) => {
@@ -93,6 +97,14 @@ const sendCarInfo = async (request: CarInfoType) => {
   });
 };
 
+const postEvent = async (request: PostEventsType) => {
+  await eventsApiInstance.request<void>({
+    url: "events",
+    method: "POST",
+    data: request,
+  });
+};
+
 export const apiClient: ApiClientType = {
   getApplicationsList,
   sendNewLoanRequest,
@@ -101,4 +113,5 @@ export const apiClient: ApiClientType = {
   getApplication,
   sendCarInfo,
   getProposalsList,
+  postEvent,
 };

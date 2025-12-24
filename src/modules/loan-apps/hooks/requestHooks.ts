@@ -95,6 +95,18 @@ export const useGetProposals = (id?: string) => {
   return { isLoading, isSuccess, data };
 };
 
+export const usePostEvent = () => {
+  const {
+    isLoading,
+    isSuccess,
+    mutate: postEvent,
+  } = useMutation(apiClient.postEvent, {
+    retry: false,
+  });
+
+  return { isLoading, isSuccess, postEvent };
+};
+
 export const useSendCarInfo = () => {
   const { isLoading, isSuccess, mutate } = useMutation(apiClient.sendCarInfo, { retry: false });
 

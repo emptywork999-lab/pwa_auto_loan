@@ -1,4 +1,4 @@
-import { CarInfoType, LoanParamsType } from "../contexts";
+import { CarInfoType, LoanParamsType, PostEventsType } from "../contexts";
 import { ProcessInstanceType, StatusType, ProposalType } from "./type";
 
 export interface ApiClientType {
@@ -9,4 +9,5 @@ export interface ApiClientType {
   getApplicationStatus: (appId: string) => Promise<StatusType>;
   sendCarInfo: (request: CarInfoType) => Promise<void>;
   getProposalsList: (appId: string) => Promise<ProposalType[]>;
+  postEvent: (request: PostEventsType) => Promise<void>;
 }

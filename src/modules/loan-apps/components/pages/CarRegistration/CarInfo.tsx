@@ -1,8 +1,8 @@
 import { Card, Form, Input, Button, notification, Spin } from "antd";
 import { useEffect } from "react";
 import { useTranslate } from "@common/hooks";
-import { useFormRules, useSendCarInfo } from "../../../hooks";
-import { CarInfoDataType, useMainContext } from "../../../contexts";
+import { useFormRules, usePostEvent, useSendCarInfo } from "../../../hooks";
+import { CarInfoDataType, CreditApplicationStatusType, useMainContext } from "../../../contexts";
 import { ActionsWrapper } from "../../ActionsWrapper";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +13,7 @@ export const CarInfo = () => {
   const { isLoading, mutate } = useSendCarInfo();
   const navigate = useNavigate();
   const rules = useFormRules();
+  const { postEvent } = usePostEvent();
 
   const carPrice = Form.useWatch("carPrice", form);
 
@@ -33,6 +34,7 @@ export const CarInfo = () => {
         { applicationId: loanParams?.applicationId, data: params },
         {
           onSuccess: () => {
+            postEvent({ id: crypto.randomUUID(), type: CreditApplicationStatusType.UNDER_REVIEW, data: params });
             notification.success({ message: translate("car-info_sent") });
             navigate("/loan-apps");
           },

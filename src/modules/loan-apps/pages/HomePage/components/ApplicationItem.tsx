@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useTranslate } from "@common/hooks";
 
 import { ClockCircleOutlined, FileTextOutlined, SignatureOutlined } from "@ant-design/icons";
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Tag, Typography } from "antd";
 
 import { CreditApplicationStatusType, useMainContext, type LoanParamsType } from "../../../contexts";
 import styled from "styled-components";
+import { AppInfo } from "./AppInfo";
 
 const { Paragraph, Title } = Typography;
 
@@ -19,6 +20,11 @@ const StyledCard = styled(Card)`
   @media (width <= 768px) {
     width: 100%;
   }
+`;
+
+const StyledTag = styled(Tag)`
+  white-space: pre-wrap;
+  margin-bottom: 2px;
 `;
 
 export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number }) => {
@@ -49,27 +55,42 @@ export const ApplicationItem = ({ loan }: { loan: LoanParamsType; index: number 
       return (
         <StyledCard actions={[<Button onClick={onSetCurrentLoan}>{translate("go_to_application")}</Button>]}>
           <Title level={4} style={{ margin: 0 }}>
-            <ClockCircleOutlined /> {translate("application_sent")}
+            <StyledTag color={"blue"}>
+              <ClockCircleOutlined /> {translate("application_sent")}
+            </StyledTag>
           </Title>
-          <Paragraph type="secondary">{translate("step2.infoDescription")}</Paragraph>
+          <AppInfo loan={loan} />
+          <Paragraph italic type="secondary">
+            {translate("step2.infoDescription")}
+          </Paragraph>
         </StyledCard>
       );
     case CreditApplicationStatusType.PROPOSALS_READY:
       return (
         <StyledCard actions={[<Button onClick={onSetCurrentLoan}>{translate("go_to_proposals")}</Button>]}>
           <Title level={4} style={{ margin: 0 }}>
-            <FileTextOutlined /> {translate("proposals_received")}
+            <StyledTag color={"orange"}>
+              <FileTextOutlined /> {translate("proposals_received")}
+            </StyledTag>
           </Title>
-          <Paragraph type="secondary">{translate("proposals_desc")}</Paragraph>
+          <AppInfo loan={loan} />
+          <Paragraph italic type="secondary">
+            {translate("proposals_desc")}
+          </Paragraph>
         </StyledCard>
       );
     case CreditApplicationStatusType.READY_FOR_SIGNATURE:
       return (
         <StyledCard actions={[<Button onClick={onSetCurrentLoan}>{translate("go_to_signing")}</Button>]}>
           <Title level={4} style={{ margin: 0 }}>
-            <SignatureOutlined /> {translate("ready_for_signature")}
+            <StyledTag color={"green"}>
+              <SignatureOutlined /> {translate("ready_for_signature")}
+            </StyledTag>
           </Title>
-          <Paragraph type="secondary">{translate("step5.success")}</Paragraph>
+          <AppInfo loan={loan} />
+          <Paragraph italic type="secondary">
+            {translate("step5.success")}
+          </Paragraph>
         </StyledCard>
       );
   }

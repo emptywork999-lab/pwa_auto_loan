@@ -72,4 +72,10 @@ export type CarInfoType = {
   applicationId: string;
 };
 
+export type PostEventsType = {
+  id: string;
+  type: CreditApplicationStatusType;
+  data: LoanParamsType | CarInfoDataType;
+};
+
 export type FormType = Record<string, string | boolean | ProposalType>;

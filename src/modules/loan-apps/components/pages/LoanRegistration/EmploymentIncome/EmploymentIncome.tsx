@@ -4,8 +4,8 @@ import { EmploymentIncomeForm } from "./EmploymentIncomeForm";
 import { useNavigate } from "react-router-dom";
 import { useTranslate } from "@common/hooks";
 import { useAuthContext } from "@common/auth";
-import { usePostApplication, useRunLoanBp } from "../../../../hooks";
-import { CreditApplicationStatusType, useMainContext } from "../../../../contexts";
+import { usePostApplication, usePostEvent, useRunLoanBp } from "../../../../hooks";
+import { CreditApplicationStatusType, LoanParamsType, useMainContext } from "../../../../contexts";
 import { ActionsWrapper } from "../../../ActionsWrapper";
 
 interface EmploymentIncomeType {
@@ -21,9 +21,10 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
   const { profile } = useAuthContext();
   const navigate = useNavigate();
   const { runLoanBp } = useRunLoanBp();
+  const { postEvent } = usePostEvent();
 
   const startBp = useCallback(
-    (data: unknown) => {
+    (data: unknown, request: LoanParamsType) => {
       if (data) {
         const applicationId = JSON.parse(data as string)?.applicationId;
         runLoanBp(
@@ -35,6 +36,7 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
           },
           {
             onSuccess: () => {
+              postEvent({ id: crypto.randomUUID(), type: CreditApplicationStatusType.SUBMITTED, data: request });
               notification.success({ message: translate("application_sent") });
               navigate("/loan-apps");
             },
@@ -43,7 +45,7 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
         );
       }
     },
-    [navigate, runLoanBp, translate],
+    [navigate, runLoanBp, translate, postEvent],
   );
 
   const sendLoanApplication = useCallback(() => {
@@ -59,7 +61,7 @@ export const EmploymentIncome: FC<EmploymentIncomeType> = ({ setCurrentStep, dis
       applicationId: crypto.randomUUID(),
     };
     mutate(requestObject, {
-      onSuccess: startBp,
+      onSuccess: (data) => startBp(data, requestObject),
       onError: () => notification.error({ message: translate("failed_start_bp") }),
     });
   }, [mutate, profile?.userId, currentLoan, form, startBp, translate]);
