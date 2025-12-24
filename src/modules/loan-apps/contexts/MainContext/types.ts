@@ -1,3 +1,4 @@
+import { ProposalType } from "../../types";
 import type { Dispatch, SetStateAction } from "react";
 
 export enum CreditApplicationStatusType {
@@ -11,15 +12,6 @@ export interface MainContextType {
   currentLoan: LoanParamsType;
   setCurrentLoan: Dispatch<SetStateAction<LoanParamsType>>;
   onSaveLoanParams: (form: FormType) => void;
-}
-
-export interface ProposalType {
-  id: number;
-  amount: number;
-  interest: number;
-  term: number;
-  payment: number;
-  loanDuration: string;
 }
 export interface PersonalInfoType {
   firstName: string;
@@ -72,10 +64,17 @@ export type CarInfoType = {
   applicationId: string;
 };
 
+export const enum EventType {
+  USER_ACCEPT1 = "event_user_accept1",
+  USER_ACCEPT2 = "event_user_accept2",
+  CAR_INFO = "event_user_carinfo",
+}
+
 export type PostEventsType = {
   id: string;
-  type: CreditApplicationStatusType;
-  data: LoanParamsType | CarInfoDataType;
+  type: EventType;
+  result: string;
+  data?: unknown;
 };
 
 export type FormType = Record<string, string | boolean | ProposalType>;

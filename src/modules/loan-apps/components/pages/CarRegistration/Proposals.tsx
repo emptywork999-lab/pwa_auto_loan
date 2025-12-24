@@ -1,11 +1,12 @@
 import { Card, List, Typography, Space, Tag, Button, Select } from "antd";
-import { useMainContext } from "../../../contexts";
+import { EventType, useMainContext } from "../../../contexts";
 import { useTranslate } from "@common/hooks";
 import { ActionsWrapper } from "../../ActionsWrapper";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
-import { useGetProposals } from "../../../hooks";
+import { useGetProposals, usePostEvent } from "../../../hooks";
+import { ProposalType } from "../../../types";
 
 const { Title } = Typography;
 
@@ -44,6 +45,7 @@ export const Proposals = () => {
   const [selectedSignType, setSelectedSignType] = useState("electronicSigning");
   const navigate = useNavigate();
   const { data: proposals } = useGetProposals(currentLoan?.applicationId);
+  const { postEvent } = usePostEvent();
 
   const signingOptions = [
     {
@@ -62,6 +64,19 @@ export const Proposals = () => {
 
   const getPeriodText = (period: number) => {
     return `${period} ${translate("proposal.period.months")}`;
+  };
+
+  const onSelectProposal = (proposal: ProposalType) => {
+    if (currentLoan?.applicationId) {
+      postEvent(
+        { id: currentLoan?.applicationId, type: EventType.USER_ACCEPT1, result: "OK", data: proposal },
+        {
+          onSuccess: () => {
+            navigate(`/loan-apps/${currentLoan?.applicationId}/car-info`);
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -102,7 +117,7 @@ export const Proposals = () => {
             />
             <BtnsWrapper>
               <Select options={signingOptions} value={selectedSignType} onChange={setSelectedSignType} />
-              <Button type="primary" onClick={() => navigate(`/loan-apps/${currentLoan?.applicationId}/car-info`)}>
+              <Button type="primary" onClick={() => onSelectProposal(proposal)}>
                 {translate("step3.select")}
               </Button>
             </BtnsWrapper>
