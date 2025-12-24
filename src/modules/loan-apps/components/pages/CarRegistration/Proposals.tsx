@@ -69,7 +69,12 @@ export const Proposals = () => {
   const onSelectProposal = (proposal: ProposalType) => {
     if (currentLoan?.applicationId) {
       postEvent(
-        { id: currentLoan?.applicationId, type: EventType.USER_ACCEPT1, result: "OK", data: proposal },
+        {
+          id: currentLoan?.applicationId,
+          type: EventType.USER_ACCEPT1,
+          result: "OK",
+          data: { ...proposal, signType: selectedSignType },
+        },
         {
           onSuccess: () => {
             navigate(`/loan-apps/${currentLoan?.applicationId}/car-info`);
